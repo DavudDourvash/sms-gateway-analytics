@@ -64,6 +64,33 @@ The dataset provides real-world telecom activity and allows the project to explo
 - Data engineering
 - Operational analytics
 
+## Data Grain
+
+Each logical record represents telecommunications activity associated with:
+
+* A geographic grid square
+* A time interval
+* A country code
+
+The time dimension is based on 10-minute intervals.
+
+Conceptually:
+
+```text
+Geographic Square
+        +
+Time Interval
+        +
+Country Code
+        ↓
+Activity Measurements
+```
+
+The raw record may contain activity measurements for SMS, calls, and Internet. Missing activity values may result in fewer populated fields in the raw representation.
+
+The current analytical layer will extract and model the SMS-related measurements from these records.
+
+
 ## Limitations
 
 The dataset does not provide commercial SMS Gateway information such as:
