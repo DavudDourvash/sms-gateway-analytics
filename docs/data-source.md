@@ -1,36 +1,74 @@
 # Data Source
 
-## Initial Data Source
+## Primary Source
 
-The project will use publicly available real-world telecom data.
+Telecom Italia Big Data Challenge — Telecommunications Activity Dataset.
 
-## Data Requirements
+The dataset contains real-world aggregated telecommunications activity from the Telecom Italia cellular network.
 
-The dataset should contain, where available:
+## Source
 
-- SMS activity
-- Timestamp
-- Sender/receiver or anonymized entities
-- Location or network information
-- Event type
-- Sufficient volume for analytical and data engineering exercises
+Harvard Dataverse
 
-## Data Source Principles
+Dataset:
+Telecommunications - SMS, Call, Internet - MI
 
-The data must be:
+DOI:
+10.7910/DVN/EGZHFV
 
-1. Real-world or derived from real-world observations
-2. Publicly available
-3. Legally usable for research and portfolio purposes
-4. Suitable for programmatic ingestion
-5. Large enough to support data engineering concepts
+## Initial Project Scope
 
-## Important Limitation
+The initial version of this project focuses exclusively on SMS activity.
 
-Public datasets rarely contain the complete commercial data model of an SMS Gateway, including customers, pricing, revenue, providers, delivery status, and operational metadata.
+The source dataset contains:
 
-Therefore, the initial version will focus on the real telecom data that is publicly available. Additional gateway-specific entities may be introduced later only when their data source and assumptions are clearly documented.
+- SMS-in activity
+- SMS-out activity
+- Call activity
+- Internet activity
 
-## Status
+Calls and Internet activity are outside the initial scope.
 
-Data source selection: In progress
+## Data Dimensions
+
+The SMS activity data provides information across:
+
+- Geographic grid cells
+- Time intervals
+- Country codes
+- SMS-in activity
+- SMS-out activity
+
+The activity is aggregated into spatial and temporal units rather than exposing individual users.
+
+## Why This Dataset?
+
+The dataset provides real-world telecom activity and allows the project to explore:
+
+- Large-scale data processing
+- Time-series analytics
+- Spatial analytics
+- Data modeling
+- Data quality
+- Data engineering
+- Operational analytics
+
+## Limitations
+
+The dataset does not provide commercial SMS Gateway information such as:
+
+- Customer accounts
+- Pricing
+- Revenue
+- Provider contracts
+- Delivery status
+- Campaign information
+
+These entities will not be fabricated and may be introduced only in later stages using clearly documented sources or simulated operational data.
+
+## Current Status
+
+Data source selected.
+
+Initial analytical scope:
+SMS activity.
