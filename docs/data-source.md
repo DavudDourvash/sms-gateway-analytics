@@ -16,19 +16,30 @@ Telecommunications - SMS, Call, Internet - MI
 DOI:
 10.7910/DVN/EGZHFV
 
-## Initial Project Scope
+Source Data vs. Analytical Scope
 
-The initial version of this project focuses exclusively on SMS activity.
+The raw source dataset contains multiple types of telecommunications activity:
 
-The source dataset contains:
+SMS-in activity
+SMS-out activity
+Call-in activity
+Call-out activity
+Internet activity
 
-- SMS-in activity
-- SMS-out activity
-- Call activity
-- Internet activity
+The analytical scope of this project is currently limited to SMS activity.
 
-Calls and Internet activity are outside the initial scope.
+Therefore:
 
+The raw dataset is treated as a broader Telecommunications Activity source.
+SMS-in and SMS-out are the primary metrics for the current analytical layer.
+Call and Internet activity are retained in the raw source but are outside the current analytical scope.
+No commercial SMS Gateway entities such as customers, pricing, revenue, delivery status, or provider contracts are inferred from this dataset.
+
+This distinction is intentional:
+
+Source Data Scope ≠ Analytical Scope
+
+The project may expand to other activity types in future versions if they provide a meaningful analytical or engineering use case.
 ## Data Dimensions
 
 The SMS activity data provides information across:
