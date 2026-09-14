@@ -219,3 +219,6 @@ __marimo__/
 
 # Raw datasets
 data/
+
+# IDE
+.idea/
