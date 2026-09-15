@@ -193,6 +193,44 @@ The final key strategy will be decided during PostgreSQL implementation.
 
 ---
 
+## Grain Validation
+
+The proposed analytical grain was validated against the raw source data using the combination:
+
+```text
+square_id
++
+time_interval
++
+country_code
+```
+
+A dedicated validation script was used to check whether multiple records exist for the same logical grain.
+
+Validation result:
+
+```text
+Duplicate grain records: 0
+```
+
+Therefore, for the profiled source file, no duplicate records were found at the proposed analytical grain.
+
+This provides evidence that:
+
+> **One geographic square + one country code + one 10-minute time interval**
+
+can currently be treated as the logical grain of `fact_sms_activity`.
+
+The validation script is located at:
+
+```text
+src/profiling/validate_model_grain.py
+```
+
+This validation is based on the currently profiled source data. It should be repeated when additional source files are ingested.
+
+
+
 ## Measures
 
 The current analytical model contains two primary measures:
