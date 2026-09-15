@@ -16,18 +16,6 @@ DATA_PATH = Path("C:/Users/d.dorvash/Dourvash Projects/"
                  "sms_gateway/sms-gateway-analytics/data/raw/"
                  "sms-call-internet-mi-2013-11-01.txt")
 
-COLUMNS = [
-    "square_id",
-    "time_interval",
-    "country_code",
-    "sms_in",
-    "sms_out",
-    "call_in",
-    "call_out",
-    "internet",
-]
-
-
 
 CHUNK_SIZE = 100_000
 
