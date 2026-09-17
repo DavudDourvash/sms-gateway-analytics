@@ -203,69 +203,185 @@ Detailed architecture decisions are documented in:
 
 ## Project Status
 
-### Day 1 — Project Definition & Architecture ✅
+### Day 1 — Project Foundation
+
+**Completed**
 
 * Business problem defined
 * Project scope defined
-* Real-world dataset selected
-* Initial architecture defined
-* Processing strategy defined
-* Development strategy defined
-* Initial data model proposed
-* Architecture principles documented
+* Real-world public data source selected
+* Initial architecture designed
+* Batch and incremental processing strategy defined
+* Local-first development strategy defined
 
-### Day 2 — Data Profiling ✅
+### Day 2 — Data Profiling
 
-* Real dataset downloaded and inspected
+**Completed**
+
+* Real source file downloaded and inspected
 * Source schema identified
-* Data grain investigated
-* Data volume measured
-* Time structure validated
-* Missing values analyzed
-* Duplicate records checked
+* 10-minute time interval structure validated
+* Missing values profiled
 * Cardinality analyzed
-* Data quality checks performed
-* SMS activity distribution analyzed
-* Profiling results documented
+* Duplicate logical records checked
+* SMS distributions analyzed
+* Full-file profiling completed
 
-### Day 3 — Data Modeling & Grain Validation ✅
+Key findings:
+
+* 4,842,625 rows in the profiled daily source file
+* 10,000 geographic squares
+* 246 country codes
+* 144 ten-minute intervals per day
+* No duplicate records at the proposed logical grain
+* Significant NULL values in activity measures
+* SMS-in and SMS-out selected as the current analytical scope
+
+### Day 3 — Data Modeling & Grain Validation
+
+**Completed**
 
 * Analytical grain defined
-* Proposed grain validated against real data
-* Fact table designed
-* Dimension tables designed
-* Star-schema-oriented model defined
-* Time dimension designed
+* Star-schema-oriented model designed
+* `fact_sms_activity` defined
+* `dim_time` defined
+* `dim_square` defined
+* `dim_country` defined
 * Natural and surrogate key strategy defined
-* NULL handling strategy documented
-* Data model documentation completed
-* Learning journal updated
+* NULL handling strategy defined
+* Grain validation script implemented
 
-Key evidence:
+Analytical grain:
 
 ```text
-docs/data-model.md
-docs/learning-journal/day-03.md
-src/profiling/validate_model_grain.py
-src/profiling/validate_model_grain.ipynb
+One geographic square
++
+One country code
++
+One 10-minute time interval
 ```
 
-### Day 4 — PostgreSQL Implementation 🔜
+### Day 4 — Docker, PostgreSQL & Raw Ingestion
 
-The next stage will transform the conceptual model into a working analytical database.
+**Completed / In Progress**
 
-Planned activities:
+* Docker Desktop configured
+* WSL2 environment configured
+* PostgreSQL 16 running in Docker
+* PostgreSQL database created
+* `raw` and `analytics` schemas created
+* Analytical tables created
+* Raw table created
+* `sample_100k.txt` copied into the PostgreSQL container
+* First PostgreSQL `COPY` ingestion completed successfully
+* Raw ingestion validation started
+* Repeated sample loading revealed an idempotency concern
 
-* Set up PostgreSQL
-* Create the analytical schema
-* Define physical table structures
-* Define data types and constraints
-* Load initial data
-* Validate loaded data against the source
-* Test analytical queries
-* Document implementation decisions
+Current database structure:
 
-**Day 4 has not started yet.**
+```text
+sms_gateway_analytics
+│
+├── raw
+│   └── telecom_activity_raw
+│
+└── analytics
+    ├── dim_square
+    ├── dim_country
+    ├── dim_time
+    └── fact_sms_activity
+```
+
+### Next Step
+
+The next stage is to validate the current Raw Layer before continuing:
+
+```text
+Total Rows
+    vs.
+Distinct Analytical Grain
+```
+
+Then:
+
+```text
+Raw Data
+   ↓
+Transformation
+   ↓
+Dimensions
+   ↓
+Fact Table
+```
+
+The project will first establish a reliable local ingestion and transformation pipeline before introducing additional complexity such as orchestration, cloud infrastructure, or the AI Analyst.
+
+---
+
+## Current Learning Path
+
+```text
+Fundamentals of Data Engineering
+             ↓
+Project Application
+             ↓
+Data Profiling
+             ↓
+Data Modeling
+             ↓
+Docker + PostgreSQL
+             ↓
+Data Ingestion
+             ↓
+Transformation
+             ↓
+Data Quality
+             ↓
+Incremental Processing
+             ↓
+Analytics
+             ↓
+Cloud
+             ↓
+AI Analyst
+```
+
+## Engineering Principles
+
+The project follows these principles:
+
+1. Understand the data before finalizing the model.
+2. Keep raw data separate from analytical data.
+3. Prefer simple architecture before adding infrastructure.
+4. Make ingestion repeatable and observable.
+5. Validate data quality at every important stage.
+6. Design pipelines to handle retries safely.
+7. Keep architectural decisions reversible when possible.
+8. Add cloud, orchestration, and AI only when they solve a demonstrated problem.
+9. Never fabricate unavailable business data.
+10. Build the project incrementally from local development toward production-like architecture.
+
+## Learning Journal
+
+The project documents the connection between the book concepts and their practical implementation.
+
+```text
+docs/
+├── learning-map.md
+└── learning-journal/
+    ├── day-01.md
+    ├── day-02.md
+    ├── day-03.md
+    └── day-04.md
+```
+
+Each journal entry records:
+
+* What was learned
+* How the concept was applied
+* Evidence from the project
+* Current implementation status
+* Open engineering questions
 
 ---
 
