@@ -325,3 +325,20 @@ It should also be observable, repeatable, and safe to retry.
 **Idempotent Ingestion: Next Step**
 
 **Transformation: Not Started**
+
+## Key Takeaway
+
+Day 4 showed that implementing a data model is more than creating tables.
+
+A real data pipeline also needs to consider:
+
+- reproducible infrastructure
+- raw data preservation
+- database constraints
+- data ingestion
+- validation
+- idempotency
+
+The first ingestion test exposed an important engineering question:
+
+> What happens when the same source data is loaded more than once?
