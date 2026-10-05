@@ -1,6 +1,5 @@
 from pathlib import Path
 import hashlib
-
 import psycopg
 
 
@@ -11,7 +10,6 @@ import psycopg
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 DATA_PATH = PROJECT_ROOT / "data" / "raw" / "sample_100k.txt"
-
 
 # =========================
 # File Hash
@@ -55,13 +53,39 @@ def is_file_already_loaded(conn, file_hash: str) -> bool:
             SELECT EXISTS (
                 SELECT 1
                 FROM raw.ingestion_log
-                WHERE file_hash = %s
+                WHERE LOWER(file_hash) = LOWER(%s)
             );
             """,
             (file_hash,),
         )
 
         return cur.fetchone()[0]
+
+
+
+def load_file_to_raw(conn, file_path: Path) -> int:
+    """Load a TSV file into the raw telecom activity table."""
+    row_count = 0
+
+    with conn.cursor() as cur:
+        with cur.copy(
+            """
+            COPY raw.telecom_activity_raw
+            FROM STDIN
+            WITH (
+                FORMAT text,
+                DELIMITER E'\t',
+                NULL ''
+            )
+            """
+        ) as copy:
+
+            with file_path.open("rb") as file:
+                for line in file:
+                    copy.write(line)
+                    row_count += 1
+
+    return row_count
 
 
 # =========================
@@ -88,6 +112,13 @@ if __name__ == "__main__":
             print("Ingestion action: SKIP")
         else:
             print("Ingestion action: LOAD")
+
+            row_count = load_file_to_raw(
+                conn,
+                file_path,
+            )
+
+            print(f"Rows loaded: {row_count}")
 
     finally:
         conn.close()
